@@ -1,0 +1,17 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+instance/
+.webassets-cache
+.env
+db.sqlite3
+my_app.db
+app/static/uploads/*
+!app/static/uploads/.gitkeep
+migrations/
+*.log
+app.sock

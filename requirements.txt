@@ -1,0 +1,17 @@
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Login
+Flask-WTF
+WTForms
+bcrypt
+Flask-Bcrypt
+psycopg2-binary
+python-dotenv
+WeasyPrint
+openpyxl
+ReportLab
+Gunicorn
+email-validator
+Flask-Caching
+flask-limiter

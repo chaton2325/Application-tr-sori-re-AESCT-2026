@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Causes - Association Trésorerie{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Gestion des Causes & Collectes</h1>
+    {% if current_user.role.name != 'Utilisateur Lecture Seule' %}
+    <div>
+        <a href="{{ url_for('causes.add') }}" class="btn btn-outline-primary">
+            <i class="bi bi-plus-circle me-2"></i> Créer une cause
+        </a>
+        <a href="{{ url_for('causes.contribute') }}" class="btn btn-primary ms-2">
+            <i class="bi bi-heart me-2"></i> Enregistrer une contribution
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row">
+    {% for item in causes %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title">{{ item.cause.name }}</h5>
+                    <span class="badge {% if item.cause.status == 'Active' %}bg-success{% else %}bg-secondary{% endif %}">{{ item.cause.status }}</span>
+                </div>
+                <p class="card-text text-muted small">{{ item.cause.description[:100] }}...</p>
+                
+                <div class="mb-2">
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span>Objectif: <strong>{{ item.cause.target_amount }} €</strong></span>
+                        <span>Collecté: <strong>{{ item.collected }} €</strong></span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar" role="progressbar" style="width: {{ item.percentage }}%;" aria-valuenow="{{ item.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <div class="text-end small mt-1">
+                        <span class="text-orange">{{ item.percentage|round(1) }} % atteint</span>
+                    </div>
+                </div>
+                
+                <div class="mt-3 small border-top pt-2">
+                    <i class="bi bi-calendar-event me-1"></i> Fin: {{ item.cause.end_date.strftime('%d/%m/%Y') if item.cause.end_date else '-' }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Association Trésorerie{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+</div>
+
+<div class="row">
+    <!-- Stats Cards -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card card-finance shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-orange text-uppercase mb-1">Solde Actuel</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ overall_balance|round(2) }} €</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-wallet2 fs-2 text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2" style="border-left: 5px solid #198754;">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Entrées</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_incomes|round(2) }} €</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-graph-up-arrow fs-2 text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card card-important shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Total Dépenses</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_expenses|round(2) }} €</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-graph-down-arrow fs-2 text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card shadow h-100 py-2" style="border-left: 5px solid #000000;">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Adhérents Actifs</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ member_count }}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="bi bi-people fs-2 text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Evolution des Flux Financiers</h6>
+            </div>
+            <div class="card-body">
+                <div style="height: 300px;">
+                    <canvas id="financialChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Causes Actives</h6>
+            </div>
+            <div class="card-body">
+                <div class="text-center py-4">
+                    <h1 class="display-4">{{ active_causes_count }}</h1>
+                    <p class="text-muted">Causes en cours de collecte</p>
+                    <a href="{{ url_for('causes.index') }}" class="btn btn-outline-primary btn-sm">Voir tout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ctx = document.getElementById('financialChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Entrées',
+                data: [1200, 1900, 3000, 5000, 2000, 3000],
+                borderColor: '#FFA500',
+                tension: 0.1
+            }, {
+                label: 'Sorties',
+                data: [700, 1100, 500, 800, 300, 700],
+                borderColor: '#FF0000',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+{% endblock %}

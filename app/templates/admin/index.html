@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Administration - Association Trésorerie{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Administration du Système</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Utilisateurs</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Rôle</th>
+                                <th>Statut</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for u in users %}
+                            <tr>
+                               <td>{{ u.username }}</td>
+                               <td><small>{{ u.role.name }}</small></td>
+                               <td>
+                                   {% if u.active %}
+                                   <span class="badge bg-success">Actif</span>
+                                   {% else %}
+                                   <span class="badge bg-danger">Inactif</span>
+                                   {% endif %}
+                               </td>
+                               <td>
+                                   <a href="{{ url_for('admin.toggle_user', id=u.id) }}" class="btn btn-sm btn-outline-warning">
+                                       <i class="bi bi-power"></i>
+                                   </a>
+                               </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Journal d'Audit (Dernières actions)</h6>
+            </div>
+            <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                <div class="list-group list-group-flush">
+                    {% for log in logs %}
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ log.action }}</h6>
+                            <small>{{ log.timestamp.strftime('%d/%m %H:%M') }}</small>
+                        </div>
+                        <p class="mb-1 small">Par: {{ log.user.username if log.user else 'Système' }} ({{ log.ip_address }})</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

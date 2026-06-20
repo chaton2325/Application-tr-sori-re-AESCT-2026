@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Rapports - Association Trésorerie{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Rapports & Exports</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body text-center">
+                <i class="bi bi-file-earmark-excel fs-1 text-success mb-3"></i>
+                <h5>Rapport Financier Complet</h5>
+                <p class="text-muted small">Export Excel de toutes les opérations, cotisations et contributions.</p>
+                <a href="{{ url_for('reports.export_excel') }}" class="btn btn-success">Exporter en Excel</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body text-center opacity-50">
+                <i class="bi bi-file-earmark-pdf fs-1 text-danger mb-3"></i>
+                <h5>Rapport Annuel (PDF)</h5>
+                <p class="text-muted small">Générer un bilan comptable annuel complet.</p>
+                <button class="btn btn-danger" disabled>Bientôt disponible</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-body text-center opacity-50">
+                <i class="bi bi-people fs-1 text-primary mb-3"></i>
+                <h5>Liste des Adhérents</h5>
+                <p class="text-muted small">Liste complète des adhérents avec leurs coordonnées.</p>
+                <button class="btn btn-primary" disabled>Bientôt disponible</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

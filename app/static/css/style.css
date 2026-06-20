@@ -1,0 +1,62 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.sidebar {
+    min-height: 100vh;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.sidebar a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: #333333;
+}
+
+.sidebar a.active {
+    border-left: 4px solid #FF0000;
+    background-color: #1a1a1a;
+}
+
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.btn-primary {
+    background-color: #FF0000;
+    border-color: #FF0000;
+}
+
+.btn-primary:hover {
+    background-color: #CC0000;
+    border-color: #CC0000;
+}
+
+.text-orange {
+    color: #FFA500;
+}
+
+.bg-orange {
+    background-color: #FFA500;
+}
+
+.card-finance {
+    border-left: 5px solid #FFA500;
+}
+
+.card-important {
+    border-left: 5px solid #FF0000;
+}
+
+.progress-bar {
+    background-color: #FFA500;
+}

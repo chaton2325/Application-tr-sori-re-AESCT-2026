@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Cotisations - Association Trésorerie{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Gestion des Cotisations</h1>
+    {% if current_user.role.name != 'Utilisateur Lecture Seule' %}
+    <a href="{{ url_for('cotisations.add') }}" class="btn btn-primary">
+        <i class="bi bi-cash me-2"></i> Enregistrer un versement
+    </a>
+    {% endif %}
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Adhérent</th>
+                        <th>Mois/Année</th>
+                        <th>Attendu</th>
+                        <th>Versé</th>
+                        <th>Reliquat</th>
+                        <th>Date</th>
+                        <th>Observation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in cotisations %}
+                    <tr>
+                        <td>{{ c.member.full_name }}</td>
+                        <td>{{ c.month }}/{{ c.year }}</td>
+                        <td>{{ c.amount_expected }} €</td>
+                        <td>{{ c.amount_paid }} €</td>
+                        <td>
+                            {% set balance = c.amount_expected - c.amount_paid %}
+                            {% if balance > 0 %}
+                            <span class="text-danger">{{ balance }} €</span>
+                            {% elif balance < 0 %}
+                            <span class="text-success">+{{ -balance }} €</span>
+                            {% else %}
+                            <span class="text-muted">0 €</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ c.date_paid.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ c.notes or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
