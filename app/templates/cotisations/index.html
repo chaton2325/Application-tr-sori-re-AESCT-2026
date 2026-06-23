@@ -68,16 +68,16 @@
                     <tr>
                         <td>{{ c.member.full_name }}</td>
                         <td>{{ c.month }}/{{ c.year }}</td>
-                        <td>{{ c.amount_expected }} €</td>
-                        <td>{{ c.amount_paid }} €</td>
+                        <td>{{ c.amount_expected }} TND</td>
+                        <td>{{ c.amount_paid }} TND</td>
                         <td>
                             {% set balance = c.amount_expected - c.amount_paid %}
                             {% if balance > 0 %}
-                            <span class="text-danger">{{ balance }} €</span>
+                            <span class="text-danger">{{ balance }} TND</span>
                             {% elif balance < 0 %}
-                            <span class="text-success">+{{ -balance }} €</span>
+                            <span class="text-success">+{{ -balance }} TND</span>
                             {% else %}
-                            <span class="text-muted">0 €</span>
+                            <span class="text-muted">0 TND</span>
                             {% endif %}
                         </td>
                         <td>{{ c.date_paid.strftime('%d/%m/%Y') }}</td>
@@ -98,7 +98,7 @@
         data: {
             labels: {{ chart_labels | tojson }},
             datasets: [{
-                label: 'Montant versé (€)',
+                label: 'Montant versé (TND)',
                 data: {{ chart_values | tojson }},
                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
                 borderColor: 'rgba(54, 162, 235, 1)',

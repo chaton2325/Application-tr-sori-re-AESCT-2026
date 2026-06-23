@@ -30,7 +30,7 @@
                     <tr>
                         <td>{{ contrib.date_paid.strftime('%d/%m/%Y') }}</td>
                         <td>{{ contrib.member.full_name }}</td>
-                        <td>{{ "%.2f"|format(contrib.amount) }} €</td>
+                        <td>{{ "%.2f"|format(contrib.amount) }} TND</td>
                         <td>{{ contrib.notes or '' }}</td>
                     </tr>
                     {% endfor %}
@@ -38,7 +38,7 @@
                 <tfoot>
                     <tr>
                         <th colspan="2" class="text-end">Total</th>
-                        <th colspan="2">{{ "%.2f"|format(total_collected) }} €</th>
+                        <th colspan="2">{{ "%.2f"|format(total_collected) }} TND</th>
                     </tr>
                 </tfoot>
             </table>

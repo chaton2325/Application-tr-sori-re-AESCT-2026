@@ -47,7 +47,7 @@
                             {% for c in member.cotisations %}
                             <tr>
                                 <td>{{ c.month }}/{{ c.year }}</td>
-                                <td>{{ c.amount_paid }} €</td>
+                                <td>{{ c.amount_paid }} TND</td>
                                 <td>{{ c.date_paid.strftime('%d/%m/%Y') }}</td>
                             </tr>
                             {% else %}
@@ -77,7 +77,7 @@
                             {% for c in member.contributions %}
                             <tr>
                                 <td>{{ c.cause.name }}</td>
-                                <td>{{ c.amount }} €</td>
+                                <td>{{ c.amount }} TND</td>
                                 <td>{{ c.date_paid.strftime('%d/%m/%Y') }}</td>
                             </tr>
                             {% else %}
