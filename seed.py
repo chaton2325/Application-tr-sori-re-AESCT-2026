@@ -8,7 +8,7 @@ def seed():
         db.create_all()
         
         # Create roles
-        roles = ['Super Administrateur', 'Utilisateur Standard', 'Utilisateur Lecture Seule']
+        roles = ['Super Administrateur', 'Utilisateur Standard', 'Utilisateur Lecture Seule', 'Simple Invité']
         for r_name in roles:
             if not Role.query.filter_by(name=r_name).first():
                 role = Role(name=r_name)

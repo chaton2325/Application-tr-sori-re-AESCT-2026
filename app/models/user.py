@@ -28,7 +28,7 @@ class User(UserMixin, db.Model):
         return bcrypt.check_password_hash(self.password_hash, password)
 
     def is_admin(self):
-        return self.role and self.name == 'Super Administrateur'
+        return self.role and self.role.name == 'Super Administrateur'
 
     def __repr__(self):
         return f'<User {self.username}>'

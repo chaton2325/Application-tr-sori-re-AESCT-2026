@@ -23,7 +23,7 @@ def permission_required(permission):
                 # Standard can do everything except admin tasks
                 return f(*args, **kwargs)
             
-            if role == 'Utilisateur Lecture Seule':
+            if role in ['Utilisateur Lecture Seule', 'Simple Invité']:
                 if permission == 'read':
                     return f(*args, **kwargs)
                 else:

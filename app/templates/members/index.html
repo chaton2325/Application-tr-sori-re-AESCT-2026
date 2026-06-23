@@ -5,7 +5,7 @@
 {% block content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Gestion des Adhérents</h1>
-    {% if current_user.role.name != 'Utilisateur Lecture Seule' %}
+    {% if current_user.role.name not in ['Utilisateur Lecture Seule', 'Simple Invité'] %}
     <a href="{{ url_for('members.add') }}" class="btn btn-primary">
         <i class="bi bi-person-plus me-2"></i> Ajouter un adhérent
     </a>
@@ -42,7 +42,7 @@
                         </td>
                         <td>
                             <a href="{{ url_for('members.view', id=member.id) }}" class="btn btn-sm btn-outline-info" title="Voir"><i class="bi bi-eye"></i></a>
-                            {% if current_user.role.name != 'Utilisateur Lecture Seule' %}
+                            {% if current_user.role.name not in ['Utilisateur Lecture Seule', 'Simple Invité'] %}
                             <a href="{{ url_for('members.edit', id=member.id) }}" class="btn btn-sm btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></a>
                             {% endif %}
                         </td>

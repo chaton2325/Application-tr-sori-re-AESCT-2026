@@ -1,6 +1,8 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import cm
+from reportlab.platypus import Table, TableStyle
+from reportlab.lib import colors
 import io
 
 def generate_receipt_pdf(member_name, amount, date, reason):
@@ -34,6 +36,45 @@ def generate_receipt_pdf(member_name, amount, date, reason):
     
     p.setFont("Helvetica", 8)
     p.drawCentredString(10.5*cm, 2*cm, "Généré automatiquement par Association Trésorerie")
+    
+    p.showPage()
+    p.save()
+    
+    buffer.seek(0)
+    return buffer
+
+def generate_contributions_report_pdf(cause_name, contributions, total_collected):
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    
+    p.setFont("Helvetica-Bold", 16)
+    p.drawCentredString(10.5*cm, 28*cm, f"Rapport des Contributions - {cause_name}")
+    
+    # Create table data
+    data = [['Date', 'Contributeur', 'Montant', 'Notes']]
+    for c in contributions:
+        data.append([c.date_paid.strftime('%d/%m/%Y'), c.member.full_name, f"{float(c.amount):.2f} €", c.notes or ''])
+    
+    # Add Total row
+    data.append(['', 'Total', f"{float(total_collected):.2f} €", ''])
+    
+    # Create table
+    table = Table(data, colWidths=[2.5*cm, 5*cm, 3*cm, 6*cm])
+    
+    # Add style
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ])
+    table.setStyle(style)
+    
+    # Draw table
+    table.wrapOn(p, 0, 0)
+    table.drawOn(p, 2*cm, 20*cm)
     
     p.showPage()
     p.save()

@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file
 from flask_login import login_required, current_user
 from app.models.member import Member
 from app.models.financial import Cause, Contribution
 from app.forms.financial import CauseForm, ContributionForm
 from app import db
 from app.utils.decorators import permission_required, log_action
+from app.utils.pdf import generate_contributions_report_pdf
 from sqlalchemy import func
 
 causes_bp = Blueprint('causes', __name__, url_prefix='/causes')
@@ -69,3 +70,23 @@ def contribute():
         flash('Contribution enregistrée avec succès', 'success')
         return redirect(url_for('causes.index'))
     return render_template('causes/contribute.html', title='Enregistrer une contribution', form=form)
+
+@causes_bp.route('/view/<int:id>')
+@login_required
+@permission_required('read')
+def view(id):
+    cause = Cause.query.get_or_404(id)
+    contributions = Contribution.query.filter_by(cause_id=id).order_by(Contribution.date_paid.desc()).all()
+    total_collected = db.session.query(func.sum(Contribution.amount)).filter_by(cause_id=id).scalar() or 0
+    return render_template('causes/view.html', cause=cause, contributions=contributions, total_collected=total_collected)
+
+@causes_bp.route('/export_pdf/<int:id>')
+@login_required
+@permission_required('read')
+def export_pdf(id):
+    cause = Cause.query.get_or_404(id)
+    contributions = Contribution.query.filter_by(cause_id=id).order_by(Contribution.date_paid.desc()).all()
+    total_collected = db.session.query(func.sum(Contribution.amount)).filter_by(cause_id=id).scalar() or 0
+    pdf_buffer = generate_contributions_report_pdf(cause.name, contributions, total_collected)
+    log_action(f'Export PDF contributions cause: {cause.name}')
+    return send_file(pdf_buffer, download_name=f'Rapport_Contributions_{cause.name}.pdf', mimetype='application/pdf')

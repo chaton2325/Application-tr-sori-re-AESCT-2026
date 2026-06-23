@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Détails de la Cause - {{ cause.name }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">{{ cause.name }}</h1>
+    <a href="{{ url_for('causes.export_pdf', id=cause.id) }}" class="btn btn-danger">
+        <i class="bi bi-file-pdf me-2"></i> Exporter PDF
+    </a>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Contributions</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Contributeur</th>
+                        <th>Montant</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contrib in contributions %}
+                    <tr>
+                        <td>{{ contrib.date_paid.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ contrib.member.full_name }}</td>
+                        <td>{{ "%.2f"|format(contrib.amount) }} €</td>
+                        <td>{{ contrib.notes or '' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2" class="text-end">Total</th>
+                        <th colspan="2">{{ "%.2f"|format(total_collected) }} €</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
