@@ -12,6 +12,42 @@
     {% endif %}
 </div>
 
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow mb-4">
+            <div class="card-header">Évolution des Cotisations (12 derniers mois)</div>
+            <div class="card-body">
+                <canvas id="cotisationsChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header">Exporter Rapport Mensuel</div>
+            <div class="card-body">
+                <form action="{{ url_for('cotisations.export_pdf') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="mb-3">
+                        <label>Mois</label>
+                        <select name="month" class="form-select">
+                            {% for i in range(1, 13) %}
+                            <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label>Année</label>
+                        <input type="number" name="year" class="form-control" value="{{ now_year }}">
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100">
+                        <i class="bi bi-file-pdf me-2"></i> Exporter PDF
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive">
@@ -53,4 +89,25 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('cotisationsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ chart_labels | tojson }},
+            datasets: [{
+                label: 'Montant versé (€)',
+                data: {{ chart_values | tojson }},
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>
 {% endblock %}
