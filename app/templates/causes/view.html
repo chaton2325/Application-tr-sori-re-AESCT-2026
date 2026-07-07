@@ -3,11 +3,13 @@
 {% block title %}Détails de la Cause - {{ cause.name }}{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<div class="page-header d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">{{ cause.name }}</h1>
-    <a href="{{ url_for('causes.export_pdf', id=cause.id) }}" class="btn btn-danger">
-        <i class="bi bi-file-pdf me-2"></i> Exporter PDF
-    </a>
+    <div class="page-actions">
+        <a href="{{ url_for('causes.export_pdf', id=cause.id) }}" class="btn btn-danger">
+            <i class="bi bi-file-pdf me-2"></i> Exporter PDF
+        </a>
+    </div>
 </div>
 
 <div class="card shadow mb-4">

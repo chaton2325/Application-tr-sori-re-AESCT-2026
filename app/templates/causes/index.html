@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Causes - Association Trésorerie{% endblock %}
+{% block title %}Causes - AESCT Trésorerie{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<div class="page-header d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Gestion des Causes & Collectes</h1>
     {% if current_user.role.name not in ['Utilisateur Lecture Seule', 'Simple Invité'] %}
-    <div>
+    <div class="page-actions">
         <a href="{{ url_for('causes.add') }}" class="btn btn-outline-primary">
             <i class="bi bi-plus-circle me-2"></i> Créer une cause
         </a>

@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Cotisations - Association Trésorerie{% endblock %}
+{% block title %}Cotisations - AESCT Trésorerie{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<div class="page-header d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Gestion des Cotisations</h1>
     {% if current_user.role.name not in ['Utilisateur Lecture Seule', 'Simple Invité'] %}
-    <a href="{{ url_for('cotisations.add') }}" class="btn btn-primary">
-        <i class="bi bi-cash me-2"></i> Enregistrer un versement
-    </a>
+    <div class="page-actions">
+        <a href="{{ url_for('cotisations.add') }}" class="btn btn-primary">
+            <i class="bi bi-cash me-2"></i> Enregistrer un versement
+        </a>
+    </div>
     {% endif %}
 </div>
 
@@ -100,8 +102,8 @@
             datasets: [{
                 label: 'Montant versé (TND)',
                 data: {{ chart_values | tojson }},
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(249, 115, 22, 0.55)',
+                borderColor: '#dc2626',
                 borderWidth: 1
             }]
         },

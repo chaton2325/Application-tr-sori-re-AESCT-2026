@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Finances - Association Trésorerie{% endblock %}
+{% block title %}Finances - AESCT Trésorerie{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<div class="page-header d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Opérations Financières</h1>
     {% if current_user.role.name not in ['Utilisateur Lecture Seule', 'Simple Invité'] %}
-    <a href="{{ url_for('finance.add') }}" class="btn btn-primary">
-        <i class="bi bi-plus-square me-2"></i> Nouvelle opération
-    </a>
+    <div class="page-actions">
+        <a href="{{ url_for('finance.add') }}" class="btn btn-primary">
+            <i class="bi bi-plus-square me-2"></i> Nouvelle opération
+        </a>
+    </div>
     {% endif %}
 </div>
 
