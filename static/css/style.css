@@ -116,7 +116,12 @@ h1.h2::after {
 }
 
 @media (min-width: 768px) {
-    .sidebar { min-height: 100vh; }
+    .sidebar {
+        min-height: 100vh;
+        /* Bootstrap force "background-color: transparent !important" sur
+           .offcanvas-md au-dessus du breakpoint : on doit contrer avec !important */
+        background-color: var(--sidebar-bg) !important;
+    }
 }
 
 .sidebar .brand-block {

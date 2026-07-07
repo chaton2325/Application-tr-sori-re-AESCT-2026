@@ -30,14 +30,14 @@ def create_app(config_class=Config):
     login_manager.login_message_category = 'info'
 
     # Register Blueprints
-    from app.routes.auth import auth_bp
-    from app.routes.main import main_bp
-    from app.routes.members import members_bp
-    from app.routes.cotisations import cotisations_bp
-    from app.routes.causes import causes_bp
-    from app.routes.finance import finance_bp
-    from app.routes.reports import reports_bp
-    from app.routes.admin import admin_bp
+    from routes.auth import auth_bp
+    from routes.main import main_bp
+    from routes.members import members_bp
+    from routes.cotisations import cotisations_bp
+    from routes.causes import causes_bp
+    from routes.finance import finance_bp
+    from routes.reports import reports_bp
+    from routes.admin import admin_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)

@@ -26,4 +26,4 @@ class BasicTests(unittest.TestCase):
     def test_login_page(self):
         response = self.client.get('/login')
         self.assertEqual(response.status_code, 200)
-        self.assertIn(b'Association', response.data)
+        self.assertIn(b'AESCT', response.data)

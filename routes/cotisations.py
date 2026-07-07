@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file
 from flask_login import login_required, current_user
-from app.models.member import Member
-from app.models.financial import Cotisation
-from app.forms.financial import CotisationForm
+from models.member import Member
+from models.financial import Cotisation
+from forms.financial import CotisationForm
 from app import db
-from app.utils.decorators import permission_required, log_action
-from app.utils.pdf import generate_cotisations_report_pdf
+from utils.decorators import permission_required, log_action
+from utils.pdf import generate_cotisations_report_pdf
 from datetime import datetime
 from sqlalchemy import func, and_
 

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
-from app.models.member import Member
-from app.models.financial import Cause, Cotisation, FinanceEntry, Contribution
+from models.member import Member
+from models.financial import Cause, Cotisation, FinanceEntry, Contribution
 from sqlalchemy import func
 from app import db
 from datetime import datetime, timedelta

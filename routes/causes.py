@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file
 from flask_login import login_required, current_user
-from app.models.member import Member
-from app.models.financial import Cause, Contribution
-from app.forms.financial import CauseForm, ContributionForm
+from models.member import Member
+from models.financial import Cause, Contribution
+from forms.financial import CauseForm, ContributionForm
 from app import db
-from app.utils.decorators import permission_required, log_action
-from app.utils.pdf import generate_contributions_report_pdf
+from utils.decorators import permission_required, log_action
+from utils.pdf import generate_contributions_report_pdf
 from sqlalchemy import func
 
 causes_bp = Blueprint('causes', __name__, url_prefix='/causes')

@@ -10,8 +10,8 @@ instance/
 .env
 db.sqlite3
 my_app.db
-app/static/uploads/*
-!app/static/uploads/.gitkeep
+static/uploads/*
+!static/uploads/.gitkeep
 migrations/
 *.log
 app.sock

@@ -1,10 +1,10 @@
 import os
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user
-from app.models.financial import FinanceEntry, Category
-from app.forms.financial import FinanceEntryForm
+from models.financial import FinanceEntry, Category
+from forms.financial import FinanceEntryForm
 from app import db
-from app.utils.decorators import permission_required, log_action
+from utils.decorators import permission_required, log_action
 from werkzeug.utils import secure_filename
 from datetime import datetime
 

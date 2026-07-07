@@ -9,7 +9,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'postgresql://postgres:postgres@localhost/dbaescttresoreire'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER = os.path.join(basedir, 'app/static/uploads')
+    UPLOAD_FOLDER = os.path.join(basedir, 'static/uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     
     # Security

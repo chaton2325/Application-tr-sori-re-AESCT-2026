@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import abort, request
 from flask_login import current_user
-from app.models.audit import AuditLog
+from models.audit import AuditLog
 from app import db
 
 def permission_required(permission):

@@ -1,6 +1,6 @@
 from app import create_app, db
-from app.models.user import User, Role
-from app.models.financial import Category
+from models.user import User, Role
+from models.financial import Category
 
 def seed():
     app = create_app()

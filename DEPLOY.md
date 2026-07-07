@@ -58,7 +58,7 @@ server {
     }
 
     location /static {
-        alias /var/www/Application-tr-sori-re-AESCT-2026/app/static;
+        alias /var/www/Application-tr-sori-re-AESCT-2026/static;
     }
 }
 ```

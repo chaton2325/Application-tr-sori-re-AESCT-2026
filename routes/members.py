@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required
-from app.models.member import Member
-from app.forms.members import MemberForm
+from models.member import Member
+from forms.members import MemberForm
 from app import db
-from app.utils.decorators import permission_required, log_action
+from utils.decorators import permission_required, log_action
 
 members_bp = Blueprint('members', __name__, url_prefix='/members')
 

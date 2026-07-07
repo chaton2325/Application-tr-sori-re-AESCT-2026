@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required
-from app.models.user import User, Role
-from app.models.audit import AuditLog
-from app.utils.decorators import admin_required, log_action
+from models.user import User, Role
+from models.audit import AuditLog
+from utils.decorators import admin_required, log_action
 from app import db
-from app.forms.auth import RegistrationForm
+from forms.auth import RegistrationForm
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 

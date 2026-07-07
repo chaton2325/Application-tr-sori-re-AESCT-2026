@@ -1,8 +1,8 @@
 from app import create_app, db
-from app.models.user import User, Role
-from app.models.member import Member
-from app.models.financial import Cotisation, Cause, Contribution, FinanceEntry, Category
-from app.models.audit import AuditLog
+from models.user import User, Role
+from models.member import Member
+from models.financial import Cotisation, Cause, Contribution, FinanceEntry, Category
+from models.audit import AuditLog
 
 app = create_app()
 

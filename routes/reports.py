@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, send_file, request
 from flask_login import login_required
-from app.models.financial import FinanceEntry, Cotisation, Contribution
-from app.utils.decorators import permission_required
+from models.financial import FinanceEntry, Cotisation, Contribution
+from utils.decorators import permission_required
 import io
 # Using openpyxl directly to avoid pandas dependency if not strictly needed for simple exports
 from openpyxl import Workbook
