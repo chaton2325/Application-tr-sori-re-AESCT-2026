@@ -340,7 +340,7 @@ def generate_contributions_report_pdf(cause_name, contributions, total_collected
 
     story.append(Paragraph(f"Rapport des Contributions — {cause_name}", STYLE_TITLE))
     story.append(Paragraph(
-        f"Détail des contributions et des opérations de trésorerie rattachées à la cause « {cause_name} »",
+        f"Détail des contributions et des opérations rattachées à la cause « {cause_name} »",
         STYLE_SUBTITLE
     ))
 
@@ -349,8 +349,8 @@ def generate_contributions_report_pdf(cause_name, contributions, total_collected
         ("Total collecté (contributions)", _fmt_amount(total_collected)),
     ]
     if balance is not None:
-        summary_items.append(("Encaissements de trésorerie liés", _fmt_amount(balance['income_linked'])))
-        summary_items.append(("Décaissements de trésorerie liés", _fmt_amount(balance['expense_linked'])))
+        summary_items.append(("Encaissements liés", _fmt_amount(balance['income_linked'])))
+        summary_items.append(("Décaissements liés", _fmt_amount(balance['expense_linked'])))
     story.append(_summary_card(summary_items))
     story.append(Spacer(1, 0.5 * cm))
 
@@ -372,10 +372,10 @@ def generate_contributions_report_pdf(cause_name, contributions, total_collected
     story.append(table)
     story.append(Spacer(1, 0.7 * cm))
 
-    # --- Opérations de trésorerie rattachées à la cause ---
+    # --- Opérations rattachées à la cause ---
     if income_entries or expense_entries:
         story.append(_section_banner(
-            "Opérations de trésorerie rattachées",
+            "Opérations rattachées",
             f"{len(income_entries)} encaissement(s) — {len(expense_entries)} décaissement(s)",
             color=ORANGE
         ))
