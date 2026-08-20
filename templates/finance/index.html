@@ -24,9 +24,13 @@
                         <th>Référence</th>
                         <th>Libellé</th>
                         <th>Catégorie</th>
+                        <th>Cause / Collecte</th>
                         <th>Type</th>
                         <th>Montant</th>
                         <th>Justificatif</th>
+                        {% if current_user.role.name not in ['Utilisateur Lecture Seule', 'Simple Invité'] %}
+                        <th></th>
+                        {% endif %}
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +40,13 @@
                         <td><code>{{ e.ref }}</code></td>
                         <td>{{ e.label }}</td>
                         <td>{{ e.category.name }}</td>
+                        <td>
+                            {% if e.cause %}
+                            <span class="badge" style="background-color: var(--primary-color);">{{ e.cause.name }}</span>
+                            {% else %}
+                            <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
                         <td>
                             {% if e.type == 'Income' %}
                             <span class="badge bg-success">Entrée</span>
@@ -53,6 +64,13 @@
                             -
                             {% endif %}
                         </td>
+                        {% if current_user.role.name not in ['Utilisateur Lecture Seule', 'Simple Invité'] %}
+                        <td>
+                            <a href="{{ url_for('finance.edit', id=e.id) }}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

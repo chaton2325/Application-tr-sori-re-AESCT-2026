@@ -38,8 +38,20 @@
                         {{ form.label(class="form-control") }}
                     </div>
                     <div class="mb-3">
+                        {{ form.cause_id.label(class="form-label") }}
+                        {{ form.cause_id(class="form-control") }}
+                        <div class="form-text">Permet de rattacher cette opération à une cause / collecte pour le bilan.</div>
+                    </div>
+                    <div class="mb-3">
                         {{ form.attachment.label(class="form-label") }}
                         {{ form.attachment(class="form-control") }}
+                        {% if entry and entry.attachment_path %}
+                        <div class="form-text">
+                            Justificatif actuel :
+                            <a href="{{ url_for('static', filename='uploads/' + entry.attachment_path) }}" target="_blank">{{ entry.attachment_path }}</a>
+                            — laisser vide pour le conserver.
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="mt-4">
                         <button type="submit" class="btn btn-primary">Enregistrer</button>

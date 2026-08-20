@@ -1,7 +1,7 @@
 import os
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user
-from models.financial import FinanceEntry, Category
+from models.financial import FinanceEntry, Category, Cause
 from forms.financial import FinanceEntryForm
 from app import db
 from utils.decorators import permission_required, log_action
@@ -9,6 +9,9 @@ from werkzeug.utils import secure_filename
 from datetime import datetime
 
 finance_bp = Blueprint('finance', __name__, url_prefix='/finance')
+
+def _cause_choices():
+    return [(0, '— Aucune —')] + [(c.id, c.name) for c in Cause.query.order_by(Cause.name).all()]
 
 @finance_bp.route('/')
 @login_required
@@ -23,21 +26,23 @@ def index():
 def add():
     form = FinanceEntryForm()
     form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
+    form.cause_id.choices = _cause_choices()
     if form.validate_on_submit():
         filename = None
         if form.attachment.data:
             f = form.attachment.data
             filename = secure_filename(f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{f.filename}")
             f.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-        
+
         # Generate automatic reference
         count = FinanceEntry.query.count() + 1
         ref = f"OP-{datetime.now().year}-{count:05d}"
-        
+
         entry = FinanceEntry(
             ref=ref,
             type=form.type.data,
             category_id=form.category_id.data,
+            cause_id=form.cause_id.data or None,
             amount=form.amount.data,
             date=form.date.data,
             label=form.label.data,
@@ -49,4 +54,36 @@ def add():
         log_action(f'Opération financière {ref}: {entry.label}')
         flash('Opération enregistrée avec succès', 'success')
         return redirect(url_for('finance.index'))
+    if request.method == 'GET':
+        form.cause_id.data = 0
     return render_template('finance/form.html', title='Nouvelle opération', form=form)
+
+@finance_bp.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@permission_required('write')
+def edit(id):
+    entry = FinanceEntry.query.get_or_404(id)
+    form = FinanceEntryForm(obj=entry)
+    form.category_id.choices = [(c.id, c.name) for c in Category.query.all()]
+    form.cause_id.choices = _cause_choices()
+    if request.method == 'GET':
+        form.cause_id.data = entry.cause_id or 0
+
+    if form.validate_on_submit():
+        if form.attachment.data:
+            f = form.attachment.data
+            filename = secure_filename(f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{f.filename}")
+            f.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+            entry.attachment_path = filename
+
+        entry.type = form.type.data
+        entry.category_id = form.category_id.data
+        entry.cause_id = form.cause_id.data or None
+        entry.amount = form.amount.data
+        entry.date = form.date.data
+        entry.label = form.label.data
+        db.session.commit()
+        log_action(f'Modification opération financière {entry.ref}: {entry.label}')
+        flash('Opération modifiée avec succès', 'success')
+        return redirect(url_for('finance.index'))
+    return render_template('finance/form.html', title=f'Modifier l\'opération {entry.ref}', form=form, entry=entry)

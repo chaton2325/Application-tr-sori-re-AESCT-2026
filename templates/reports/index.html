@@ -7,6 +7,67 @@
     <h1 class="h2">Rapports & Exports</h1>
 </div>
 
+<!-- Bilan Mensuel Global (PDF) -->
+<div class="card shadow mb-4 border-0 overflow-hidden">
+    <div class="p-4" style="background: var(--brand-gradient);">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center flex-shrink-0"
+                 style="width:56px;height:56px;border-radius:14px;background:rgba(255,255,255,0.18);">
+                <i class="bi bi-file-earmark-pdf-fill text-white fs-3"></i>
+            </div>
+            <div>
+                <h4 class="text-white mb-1 fw-bold">Bilan Mensuel Global</h4>
+                <p class="text-white-50 mb-0 small">
+                    Un PDF complet reprenant absolument toutes les opérations du mois choisi :
+                    encaissements, décaissements, cotisations des adhérents et contributions aux causes.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form action="{{ url_for('reports.export_monthly_bilan') }}" method="POST" class="row g-3 align-items-end">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="col-12 col-sm-4 col-md-3">
+                <label class="form-label">Mois</label>
+                <select name="month" class="form-select" required>
+                    {% for i in range(1, 13) %}
+                    <option value="{{ i }}" {% if i == now_month %}selected{% endif %}>
+                        {{ ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'][i-1] }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3">
+                <label class="form-label">Année</label>
+                <input type="number" name="year" class="form-control" value="{{ now_year }}" min="2000" max="2100" required>
+            </div>
+            <div class="col-12 col-sm-4 col-md-3">
+                <button type="submit" class="btn btn-danger w-100">
+                    <i class="bi bi-file-earmark-pdf me-2"></i> Générer le bilan PDF
+                </button>
+            </div>
+        </form>
+        <div class="row mt-4 g-3 text-center">
+            <div class="col-6 col-md-3">
+                <i class="bi bi-plus-circle text-success fs-4"></i>
+                <div class="small text-muted mt-1">Encaissements</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="bi bi-dash-circle text-danger fs-4"></i>
+                <div class="small text-muted mt-1">Décaissements</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="bi bi-cash-stack text-orange fs-4"></i>
+                <div class="small text-muted mt-1">Cotisations</div>
+            </div>
+            <div class="col-6 col-md-3">
+                <i class="bi bi-heart text-orange fs-4"></i>
+                <div class="small text-muted mt-1">Contributions aux causes</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-4 mb-4">
         <div class="card shadow h-100">
@@ -18,7 +79,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-4 mb-4">
         <div class="card shadow h-100">
             <div class="card-body text-center opacity-50">

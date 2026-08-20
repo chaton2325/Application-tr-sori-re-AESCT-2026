@@ -22,6 +22,9 @@ class FinanceEntry(db.Model):
     label = db.Column(db.String(200))
     attachment_path = db.Column(db.String(255))
     created_by = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # Association optionnelle à une cause / collecte (nullable : n'affecte pas les opérations existantes)
+    cause_id = db.Column(db.Integer, db.ForeignKey('causes.id'), nullable=True)
+    cause = db.relationship('Cause', backref='finance_entries')
 
 class Cotisation(db.Model):
     __tablename__ = 'cotisations'

@@ -4,6 +4,7 @@ from models.member import Member
 from models.financial import Cause, Cotisation, FinanceEntry, Contribution
 from sqlalchemy import func
 from app import db
+from utils.finance import get_overall_balance
 from datetime import datetime, timedelta
 
 main_bp = Blueprint('main', __name__)
@@ -13,15 +14,15 @@ main_bp = Blueprint('main', __name__)
 def index():
     member_count = Member.query.filter_by(active=True).count()
     active_causes_count = Cause.query.filter_by(status='Active').count()
-    
+
     # Financial summaries
     total_incomes = db.session.query(func.sum(FinanceEntry.amount)).filter_by(type='Income').scalar() or 0
     total_expenses = db.session.query(func.sum(FinanceEntry.amount)).filter_by(type='Expense').scalar() or 0
-    
+
     cotisations_total = db.session.query(func.sum(Cotisation.amount_paid)).scalar() or 0
     contributions_total = db.session.query(func.sum(Contribution.amount)).scalar() or 0
-    
-    overall_balance = (float(total_incomes) + float(cotisations_total) + float(contributions_total)) - float(total_expenses)
+
+    overall_balance = get_overall_balance()
     
     # Chart data aggregation (last 6 months)
     chart_labels = []

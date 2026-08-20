@@ -1,11 +1,12 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, send_file
 from flask_login import login_required, current_user
 from models.member import Member
-from models.financial import Cause, Contribution
+from models.financial import Cause, Contribution, FinanceEntry
 from forms.financial import CauseForm, ContributionForm
 from app import db
 from utils.decorators import permission_required, log_action
 from utils.pdf import generate_contributions_report_pdf
+from utils.finance import get_cause_balance, get_overall_balance
 from sqlalchemy import func
 
 causes_bp = Blueprint('causes', __name__, url_prefix='/causes')
@@ -23,7 +24,8 @@ def index():
             'cause': cause,
             'collected': collected,
             'percentage': min(percentage, 100),
-            'remaining': max(float(cause.target_amount) - float(collected), 0)
+            'remaining': max(float(cause.target_amount) - float(collected), 0),
+            'balance': get_cause_balance(cause.id, contributions_total=collected)
         })
     return render_template('causes/index.html', causes=cause_data)
 
@@ -78,7 +80,15 @@ def view(id):
     cause = Cause.query.get_or_404(id)
     contributions = Contribution.query.filter_by(cause_id=id).order_by(Contribution.date_paid.desc()).all()
     total_collected = db.session.query(func.sum(Contribution.amount)).filter_by(cause_id=id).scalar() or 0
-    return render_template('causes/view.html', cause=cause, contributions=contributions, total_collected=total_collected)
+    income_entries = FinanceEntry.query.filter_by(cause_id=id, type='Income').order_by(FinanceEntry.date.desc()).all()
+    expense_entries = FinanceEntry.query.filter_by(cause_id=id, type='Expense').order_by(FinanceEntry.date.desc()).all()
+    balance = get_cause_balance(id, contributions_total=total_collected)
+    overall_balance = get_overall_balance()
+    return render_template(
+        'causes/view.html', cause=cause, contributions=contributions, total_collected=total_collected,
+        income_entries=income_entries, expense_entries=expense_entries,
+        balance=balance, overall_balance=overall_balance
+    )
 
 @causes_bp.route('/export_pdf/<int:id>')
 @login_required
@@ -87,6 +97,14 @@ def export_pdf(id):
     cause = Cause.query.get_or_404(id)
     contributions = Contribution.query.filter_by(cause_id=id).order_by(Contribution.date_paid.desc()).all()
     total_collected = db.session.query(func.sum(Contribution.amount)).filter_by(cause_id=id).scalar() or 0
-    pdf_buffer = generate_contributions_report_pdf(cause.name, contributions, total_collected)
+    income_entries = FinanceEntry.query.filter_by(cause_id=id, type='Income').order_by(FinanceEntry.date.desc()).all()
+    expense_entries = FinanceEntry.query.filter_by(cause_id=id, type='Expense').order_by(FinanceEntry.date.desc()).all()
+    balance = get_cause_balance(id, contributions_total=total_collected)
+    overall_balance = get_overall_balance()
+    pdf_buffer = generate_contributions_report_pdf(
+        cause.name, contributions, total_collected,
+        income_entries=income_entries, expense_entries=expense_entries,
+        balance=balance, overall_balance=overall_balance
+    )
     log_action(f'Export PDF contributions cause: {cause.name}')
     return send_file(pdf_buffer, download_name=f'Rapport_Contributions_{cause.name}.pdf', mimetype='application/pdf')

@@ -33,6 +33,7 @@ class ContributionForm(FlaskForm):
 class FinanceEntryForm(FlaskForm):
     type = SelectField('Type', choices=[('Income', 'Entrée'), ('Expense', 'Sortie')], validators=[DataRequired()])
     category_id = SelectField('Catégorie', coerce=int, validators=[DataRequired()])
+    cause_id = SelectField('Cause / Collecte associée (optionnel)', coerce=int, validators=[Optional()])
     amount = DecimalField('Montant', validators=[DataRequired()])
     date = DateField('Date', validators=[DataRequired()])
     label = StringField('Libellé', validators=[DataRequired()])
